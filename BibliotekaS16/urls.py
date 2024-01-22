@@ -22,5 +22,6 @@ from polka import views
 urlpatterns = [
     path('admin/', admin.site.urls),
     path('', views.IndexView.as_view(), name='index'),
+    path('b/', views.HomeView.as_view(), name='home'),
     path('v/', views.Index2View.as_view(), name='index2')
 ]

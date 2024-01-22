@@ -12,12 +12,7 @@
 
 <h1>Hello World</h1>
 {{ zmienna2 }}
-<p>
-    <ul>
-        {% for element in lista %}
-            <li {% if element == 'niebieski' %}style="background-color: aqua;" {% endif %}>{{ element }}</li>
-        {% endfor %}
-    </ul>
-</p>
+{% include 'ffor.html' %}
+{% include 'ffor.html' with lista='abecadło'%}
 </body>
 </html>
