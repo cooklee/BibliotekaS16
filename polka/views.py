@@ -21,10 +21,13 @@ class AddAuthorView(View):
         return render(request, 'add_author.html', {'formularz':form})
 
     def post(self, request):
-        imie = request.POST.get('first_name')
-        nazwisko = request.POST.get('last_name')
-        Autor = Author.objects.create(first_name=imie, last_name=nazwisko)
-        return redirect('add_author')
+        form = AuthorForm(request.POST)
+        if form.is_valid():
+            imie = form.cleaned_data['first_name']
+            nazwisko = form.cleaned_data['last_name']
+            Autor = Author.objects.create(first_name=imie, last_name=nazwisko)
+            return redirect('add_author')
+        return render(request, 'add_author.html', {'formularz': form})
 class IndexView(View):
 
     def get(self, request):
