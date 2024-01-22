@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
-from polka.forms import AuthorForm
+from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm
 from polka.models import Author
 
 
@@ -25,9 +25,36 @@ class AddAuthorView(View):
         if form.is_valid():
             imie = form.cleaned_data['first_name']
             nazwisko = form.cleaned_data['last_name']
-            Autor = Author.objects.create(first_name=imie, last_name=nazwisko)
+            autor = Author.objects.create(first_name=imie, last_name=nazwisko)
             return redirect('add_author')
         return render(request, 'add_author.html', {'formularz': form})
+
+
+class AddPublisherView(View):
+
+    def get(self, request):
+        form = PublisherAddForm()
+        return render(request, 'add_publisher.html', {'form':form})
+
+    def post(self, request):
+        form = PublisherAddForm(request.POST)
+        if form.is_valid():
+            publisher = form.save()
+            return redirect('add_publisher')
+        return render(request, 'add_publisher.html', {'form': form})
+
+class AddGenreView(View):
+
+    def get(self, request):
+        form = GenreAddForm()
+        return render(request, 'add_publisher.html', {'form':form})
+
+    def post(self, request):
+        form = GenreAddForm(request.POST)
+        if form.is_valid():
+            genre = form.save()
+            return redirect('add_genre')
+        return render(request, 'add_publisher.html', {'form': form})
 class IndexView(View):
 
     def get(self, request):

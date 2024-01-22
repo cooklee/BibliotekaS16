@@ -25,5 +25,7 @@ urlpatterns = [
     path('b/', views.HomeView.as_view(), name='home'),
     path('authors/', views.AuthorView.as_view(), name='authors'),
     path('addAuthor/', views.AddAuthorView.as_view(), name='add_author'),
+    path('addPublisher/', views.AddPublisherView.as_view(), name='add_publisher'),
+    path('addGenre/', views.AddGenreView.as_view(), name='add_genre'),
     path('v/', views.Index2View.as_view(), name='index2')
 ]

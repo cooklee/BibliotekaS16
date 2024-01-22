@@ -10,6 +10,7 @@ class Author(models.Model):
 class Publisher(models.Model):
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
+    city = models.CharField(max_length=50, default='')
 
 
 class Genre(models.Model):
