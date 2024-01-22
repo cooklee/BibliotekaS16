@@ -7,6 +7,11 @@ class HomeView(View):
     def get(self, request):
         return render(request, 'base.html')
 
+class AuthorView(View):
+    def get(self, request):
+        a = ['Adam Mickiewicz', 'Andrzej Sapkowski', 'aaaa bbbbb']
+        return render(request, 'authors.html', {'authors':a})
+
 
 class IndexView(View):
 
