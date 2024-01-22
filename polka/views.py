@@ -1,6 +1,7 @@
 from django.shortcuts import render, redirect
 from django.views import View
 
+from polka.forms import AuthorForm
 from polka.models import Author
 
 
@@ -16,8 +17,8 @@ class AuthorView(View):
 
 class AddAuthorView(View):
     def get(self, request):
-
-        return render(request, 'add_author.html')
+        form = AuthorForm()
+        return render(request, 'add_author.html', {'formularz':form})
 
     def post(self, request):
         imie = request.POST.get('first_name')
