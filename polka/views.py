@@ -1,8 +1,10 @@
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy
 from django.views import View
+from django.views.generic import CreateView
 
 from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm
-from polka.models import Author
+from polka.models import Author, Book
 
 
 # Create your views here.
@@ -18,7 +20,7 @@ class AuthorView(View):
 class AddAuthorView(View):
     def get(self, request):
         form = AuthorForm()
-        return render(request, 'add_author.html', {'formularz':form})
+        return render(request, 'add_form.html', {'form':form})
 
     def post(self, request):
         form = AuthorForm(request.POST)
@@ -27,34 +29,41 @@ class AddAuthorView(View):
             nazwisko = form.cleaned_data['last_name']
             autor = Author.objects.create(first_name=imie, last_name=nazwisko)
             return redirect('add_author')
-        return render(request, 'add_author.html', {'formularz': form})
+        return render(request, 'add_form.html', {'form': form})
 
 
 class AddPublisherView(View):
 
     def get(self, request):
         form = PublisherAddForm()
-        return render(request, 'add_publisher.html', {'form':form})
+        return render(request, 'add_form.html', {'form':form})
 
     def post(self, request):
         form = PublisherAddForm(request.POST)
         if form.is_valid():
             publisher = form.save()
-            return redirect('add_publisher')
-        return render(request, 'add_publisher.html', {'form': form})
+            return redirect('add_form')
+        return render(request, 'add_form.html', {'form': form})
 
 class AddGenreView(View):
 
     def get(self, request):
         form = GenreAddForm()
-        return render(request, 'add_publisher.html', {'form':form})
+        return render(request, 'add_form.html', {'form':form})
 
     def post(self, request):
         form = GenreAddForm(request.POST)
         if form.is_valid():
             genre = form.save()
             return redirect('add_genre')
-        return render(request, 'add_publisher.html', {'form': form})
+        return render(request, 'add_form.html', {'form': form})
+
+class AddBookView(CreateView):
+    model = Book
+    fields = ['title', 'authors', 'genres']
+    template_name = 'add_form.html'
+    success_url = reverse_lazy('add_book')
+
 class IndexView(View):
 
     def get(self, request):
