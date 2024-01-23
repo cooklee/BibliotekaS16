@@ -1,0 +1,10 @@
+{% extends 'index.html' %}
+{% block zawartosc %}
+    <h1>{{ book.title }}</h1>
+    <h3> {{ book.authors }}</h3>
+    <h4>
+    {% for genre in book.genres.all %}
+        {{ genre }}
+    {% endfor %}
+    </h4>
+{% endblock %}

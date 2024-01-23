@@ -10,7 +10,7 @@ from polka.models import Author, Book, Genre
 # Create your views here.
 class HomeView(View):
     def get(self, request):
-        return render(request, 'base.html')
+        return render(request, 'index.html')
 
 
 class AuthorView(View):
@@ -91,7 +91,11 @@ class ListBookView(ListView):
                 queryset = queryset.filter(authors=author)
         return queryset
 
+class DetailBookView(View):
 
+    def get(self, request, pk):
+        book = Book.objects.get(pk=pk)
+        return render(request, 'detail_book_view.html', {'book':book})
 
 
 class ListGenreView(View):
