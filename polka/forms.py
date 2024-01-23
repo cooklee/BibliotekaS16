@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from polka.models import Publisher, Genre, Book
+from polka.models import Publisher, Genre, Book, Author
 
 
 def check_len(value):
@@ -34,3 +34,10 @@ class AddBookForm(forms.ModelForm):
         widgets = {
             'genres': forms.CheckboxSelectMultiple()
         }
+
+class GenreSearchForm(forms.Form):
+    name = forms.CharField(max_length=50, required=False)
+
+class BookSearchForm(forms.Form):
+    title = forms.CharField(max_length=50, required=False)
+    author = forms.ModelChoiceField(queryset=Author.objects.all(), required=False)

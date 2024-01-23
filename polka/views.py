@@ -3,8 +3,8 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, ListView
 
-from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm, AddBookForm
-from polka.models import Author, Book
+from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm, AddBookForm, GenreSearchForm, BookSearchForm
+from polka.models import Author, Book, Genre
 
 
 # Create your views here.
@@ -68,10 +68,41 @@ class AddBookView(CreateView):
     template_name = 'add_form.html'
     success_url = reverse_lazy('add_book')
 
-class ListBookView(ListView):
 
+
+
+class ListBookView(ListView):
     model = Book
     template_name = 'list_view.html'
+
+    def get_context_data(self, *, object_list=None, **kwargs):
+        context = super().get_context_data(object_list=object_list, **kwargs)
+        context['form'] = BookSearchForm()
+        return context
+
+    def get_queryset(self):
+        queryset = super().get_queryset()
+        form = BookSearchForm(self.request.GET)
+        if form.is_valid():
+            title = form.cleaned_data['title']
+            author = form.cleaned_data['author']
+            queryset = queryset.filter(title__icontains=title)
+            if author is not None:
+                queryset = queryset.filter(authors=author)
+        return queryset
+
+
+
+
+class ListGenreView(View):
+    def get(self, request):
+        genres = Genre.objects.all()
+        form = GenreSearchForm(request.GET)
+        if form.is_valid():
+            name = form.cleaned_data.get('name', '')
+            genres = genres.filter(name__icontains=name)
+
+        return render(request, 'list_view.html', {'object_list': genres, 'form': form})
 
 
 class IndexView(View):
