@@ -1,0 +1,7 @@
+{% extends 'index.html' %}
+{% block zawartosc %}
+    <h1>{{ genre }}</h1>
+    <h3>
+    {% include 'list.html' with object_list=genre.book_set.all %}
+    </h3>
+{% endblock %}

@@ -21,7 +21,8 @@ class Publisher(models.Model):
 class Genre(models.Model):
     name = models.CharField(max_length=50)
 
-
+    def get_absolute_url(self):
+        return reverse('detail_genre', args=(self.id,))
     def __str__(self):
         return self.name
 

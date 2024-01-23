@@ -3,8 +3,6 @@
     <h1>{{ book.title }}</h1>
     <h3> {{ book.authors }}</h3>
     <h4>
-    {% for genre in book.genres.all %}
-        {{ genre }}
-    {% endfor %}
+    {% include 'list.html' with object_list=book.genres.all %}
     </h4>
 {% endblock %}

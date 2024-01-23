@@ -6,9 +6,5 @@
             <input type="submit" value="filtruj">
         </form>
     {% endif %}
-    <ul>
-    {% for obj in object_list %}
-        <li><a href="{{ obj.get_absolute_url }}"> {{ obj }}</a></li>
-    {% endfor %}
-    </ul>
+    {% include 'list.html' %}
 {% endblock %}

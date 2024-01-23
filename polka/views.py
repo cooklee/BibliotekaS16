@@ -69,8 +69,6 @@ class AddBookView(CreateView):
     success_url = reverse_lazy('add_book')
 
 
-
-
 class ListBookView(ListView):
     model = Book
     template_name = 'list_view.html'
@@ -91,11 +89,18 @@ class ListBookView(ListView):
                 queryset = queryset.filter(authors=author)
         return queryset
 
+
+class DetailGenreView(View):
+    def get(self, request, pk):
+        genre = Genre.objects.get(pk=pk)
+        return render(request, 'detail_genre_view.html', {'genre': genre})
+
+
 class DetailBookView(View):
 
     def get(self, request, pk):
         book = Book.objects.get(pk=pk)
-        return render(request, 'detail_book_view.html', {'book':book})
+        return render(request, 'detail_book_view.html', {'book': book})
 
 
 class ListGenreView(View):
