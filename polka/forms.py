@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from polka.models import Publisher, Genre
+from polka.models import Publisher, Genre, Book
 
 
 def check_len(value):
@@ -24,3 +24,13 @@ class GenreAddForm(forms.ModelForm):
     class Meta:
         model = Genre
         fields = '__all__'
+
+
+class AddBookForm(forms.ModelForm):
+
+    class Meta:
+        model = Book
+        fields = '__all__'
+        widgets = {
+            'genres': forms.CheckboxSelectMultiple()
+        }
