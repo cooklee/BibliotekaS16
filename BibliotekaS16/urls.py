@@ -28,5 +28,6 @@ urlpatterns = [
     path('addPublisher/', views.AddPublisherView.as_view(), name='add_publisher'),
     path('addGenre/', views.AddGenreView.as_view(), name='add_genre'),
     path('addBook/', views.AddBookView.as_view(), name='add_book'),
+    path('listBook/', views.ListBookView.as_view(), name='list_book'),
     path('v/', views.Index2View.as_view(), name='index2')
 ]

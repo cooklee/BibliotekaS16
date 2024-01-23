@@ -1,7 +1,7 @@
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
-from django.views.generic import CreateView
+from django.views.generic import CreateView, ListView
 
 from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm, AddBookForm
 from polka.models import Author, Book
@@ -67,6 +67,11 @@ class AddBookView(CreateView):
     form_class = AddBookForm
     template_name = 'add_form.html'
     success_url = reverse_lazy('add_book')
+
+class ListBookView(ListView):
+
+    model = Book
+    template_name = 'list_view.html'
 
 
 class IndexView(View):
