@@ -35,4 +35,5 @@ urlpatterns = [
     path('v/', views.Index2View.as_view(), name='index2'),
     path('login/', account_view.LoginView.as_view(), name='login_view'),
     path('logout/', account_view.LogoutView.as_view(), name='logout_view'),
+    path('register/', account_view.RegistrationView.as_view(), name='register_view'),
 ]

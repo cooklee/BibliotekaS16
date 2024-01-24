@@ -1,9 +1,8 @@
 from django.contrib.auth import authenticate, login, logout
-from django.http import HttpResponse
 from django.shortcuts import render, redirect
 from django.views import View
-
-from accounts.forms import LoginForm
+from django.contrib.auth.models import User
+from accounts.forms import LoginForm, RegisterForm
 
 
 # Create your views here.
@@ -27,4 +26,20 @@ class LogoutView(View):
 
     def get(self, request):
         logout(request)
-        return HttpResponse("Logged out")
+        return redirect('home')
+
+
+class RegistrationView(View):
+    def get(self, request):
+        form = RegisterForm()
+        return render(request, 'add_form.html', {'form':form})
+
+    def post(self, request):
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            user = form.save(commit=False)
+            user.set_password(form.cleaned_data.get('password'))
+            user.save()
+            login(request, user)
+            return redirect('home')
+        return render(request, 'add_form.html', {'form': form})
