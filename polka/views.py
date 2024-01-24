@@ -1,12 +1,12 @@
-from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin, UserPassesTestMixin
 from django.shortcuts import render, redirect
-from django.urls import reverse_lazy
+from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.views.generic import CreateView, ListView
+from django.views.generic import CreateView, ListView, UpdateView
 
 from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm, AddBookForm, GenreSearchForm, BookSearchForm, \
     AddCommentForm
-from polka.models import Author, Book, Genre
+from polka.models import Author, Book, Genre, Comment
 
 
 # Create your views here.
@@ -146,6 +146,16 @@ class AddCommentView(LoginRequiredMixin, View):
             comment.book = Book.objects.get(pk=book_pk)
             comment.author = self.request.user
             comment.save()
-            return redirect('detail_book', args=(book_pk, ))
+            return redirect('detail_book', book_pk)
         return render(request, 'add_form.html', {'form': form})
 
+
+class EditCommentView( UserPassesTestMixin, UpdateView):
+    def test_func(self):
+        comment = self.get_object()
+        return self.request.user == comment.author
+    model = Comment
+    fields = ['text']
+    template_name = 'add_form.html'
+    def get_success_url(self):
+        return reverse('detail_book', args=(self.object.book.id,))

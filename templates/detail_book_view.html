@@ -5,4 +5,12 @@
     <h4>
     {% include 'list.html' with object_list=book.genres.all %}
     </h4>
+    <a href="{% url 'add_comment' book.id %}">dodaj komentarz</a>
+    <ul class="list-group">
+        {% for comment in book.comment_set.all %}
+            <li class="list-group-item"> {{ comment.text }} <small>{{ comment.author.username }} {{ comment.created }}</small>
+            <a href="{% url 'edit_comment' comment.id %}">e</a>
+            </li>
+        {% endfor %}
+    </ul>
 {% endblock %}
