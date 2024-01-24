@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from polka.models import Publisher, Genre, Book, Author
+from polka.models import Publisher, Genre, Book, Author, Comment
 
 
 def check_len(value):
@@ -41,3 +41,9 @@ class GenreSearchForm(forms.Form):
 class BookSearchForm(forms.Form):
     title = forms.CharField(max_length=50, required=False)
     author = forms.ModelChoiceField(queryset=Author.objects.all(), required=False)
+
+
+class AddCommentForm(forms.ModelForm):
+    class Meta:
+        model = Comment
+        fields = ['text']

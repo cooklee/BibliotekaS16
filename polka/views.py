@@ -4,7 +4,8 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import CreateView, ListView
 
-from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm, AddBookForm, GenreSearchForm, BookSearchForm
+from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm, AddBookForm, GenreSearchForm, BookSearchForm, \
+    AddCommentForm
 from polka.models import Author, Book, Genre
 
 
@@ -131,3 +132,20 @@ class Index2View(View):
         ]
         return render(request, 'index.html', {'zmienna1': 'Ola Boga moja noga',
                                               'zmienna2': 'Srali muszki bedzie wiosna', 'lista': lst})
+
+
+class AddCommentView(LoginRequiredMixin, View):
+
+    def get(self, request, book_pk):
+        form = AddCommentForm()
+        return render(request, 'add_form.html', {'form':form})
+    def post(self, request, book_pk):
+        form = AddCommentForm(request.POST)
+        if form.is_valid():
+            comment = form.save(commit=False)
+            comment.book = Book.objects.get(pk=book_pk)
+            comment.author = self.request.user
+            comment.save()
+            return redirect('detail_book', args=(book_pk, ))
+        return render(request, 'add_form.html', {'form': form})
+
