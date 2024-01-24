@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    "polka.apps.PolkaConfig"
+    "polka.apps.PolkaConfig",
+    "accounts.apps.AccountsConfig"
 ]
 
 MIDDLEWARE = [
