@@ -1,4 +1,4 @@
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, PermissionRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -63,7 +63,8 @@ class AddGenreView(LoginRequiredMixin, View):
         return render(request, 'add_form.html', {'form': form})
 
 
-class AddBookView(LoginRequiredMixin, CreateView):
+class AddBookView(PermissionRequiredMixin, CreateView):
+    permission_required = ['polka.add_book']
     model = Book
     form_class = AddBookForm
     template_name = 'add_form.html'

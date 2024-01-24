@@ -1,8 +1,11 @@
 from django.contrib.auth import authenticate, login, logout
 from django.shortcuts import render, redirect
+from django.urls import reverse_lazy, reverse
 from django.views import View
-from django.contrib.auth.models import User
-from accounts.forms import LoginForm, RegisterForm
+from django.contrib.auth.models import User, Group
+from django.views.generic import CreateView, UpdateView
+
+from accounts.forms import LoginForm, RegisterForm, GroupPermissionAddForm
 
 
 # Create your views here.
@@ -44,3 +47,26 @@ class RegistrationView(View):
             login(request, user)
             return redirect('home')
         return render(request, 'add_form.html', {'form': form})
+
+
+class CreateGroup(CreateView):
+    model = Group
+    fields = ['name']
+    template_name = 'add_form.html'
+    success_url = reverse_lazy('add_group')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        group = Group.objects.all()
+        context['groups'] = group
+        return context
+
+class GroupPermissionView(UpdateView):
+
+    model = Group
+    form_class = GroupPermissionAddForm
+    template_name = 'add_form.html'
+
+    def get_success_url(self):
+        return reverse('group_permission', args=(self.object.id, ))
+

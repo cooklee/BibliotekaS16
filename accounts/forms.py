@@ -1,5 +1,5 @@
 from django import forms
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User, Group
 from django.core.exceptions import ValidationError
 
 
@@ -22,3 +22,13 @@ class RegisterForm(forms.ModelForm):
         if p1 is None or p2 is None or p1 != p2:
             raise ValidationError('Hasła musza być te same')
         return cleaned_data
+
+
+class GroupPermissionAddForm(forms.ModelForm):
+
+    class Meta:
+        model = Group
+        fields = ('name', 'permissions')
+        widgets = {
+            'permissions': forms.CheckboxSelectMultiple
+        }

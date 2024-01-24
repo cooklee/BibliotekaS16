@@ -21,5 +21,7 @@ from accounts import views
 urlpatterns = [
     path('login/', views.LoginView.as_view(), name='login_view'),
     path('logout/', views.LogoutView.as_view(), name='logout_view'),
+    path('groups/', views.CreateGroup.as_view(), name='add_group'),
     path('register/', views.RegistrationView.as_view(), name='register_view'),
+    path('group_permission/<int:pk>/', views.GroupPermissionView.as_view(), name='group_permission'),
 ]
