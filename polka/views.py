@@ -1,3 +1,4 @@
+from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import render, redirect
 from django.urls import reverse_lazy
 from django.views import View
@@ -48,7 +49,7 @@ class AddPublisherView(View):
         return render(request, 'add_form.html', {'form': form})
 
 
-class AddGenreView(View):
+class AddGenreView(LoginRequiredMixin, View):
 
     def get(self, request):
         form = GenreAddForm()
@@ -62,7 +63,7 @@ class AddGenreView(View):
         return render(request, 'add_form.html', {'form': form})
 
 
-class AddBookView(CreateView):
+class AddBookView(LoginRequiredMixin, CreateView):
     model = Book
     form_class = AddBookForm
     template_name = 'add_form.html'
@@ -76,6 +77,7 @@ class ListBookView(ListView):
     def get_context_data(self, *, object_list=None, **kwargs):
         context = super().get_context_data(object_list=object_list, **kwargs)
         context['form'] = BookSearchForm()
+        context['xxx'] = 'ala ma pieska'
         return context
 
     def get_queryset(self):

@@ -19,7 +19,8 @@ class LoginView(View):
             user = authenticate(request, username=username, password=password)
             if user is not None:
                 login(request, user)
-                return redirect('home')
+                next = request.GET.get('next', 'home')
+                return redirect(next)
         return render(request, 'add_form.html', {'form': form})
 
 class LogoutView(View):
