@@ -1,6 +1,8 @@
 import pytest
+from django.contrib.auth.models import User, Permission
+from django.contrib.contenttypes.models import ContentType
 
-from polka.models import Author, Genre
+from polka.models import Author, Genre, Book
 
 
 @pytest.fixture
@@ -12,6 +14,17 @@ def author():
 def genre():
     return Genre.objects.create(name='komedia')
 
+@pytest.fixture
+def user():
+    return User.objects.create(username='test')
+
+
+@pytest.fixture
+def user_with_book_permission(user):
+    content_type = ContentType.objects.get_for_model(Book)
+    permissions = Permission.objects.filter(content_type=content_type)
+    user.user_permissions.set(permissions)
+    return user
 
 @pytest.fixture
 def list_genre():
