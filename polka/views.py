@@ -6,7 +6,7 @@ from django.views.generic import CreateView, ListView, UpdateView
 
 from polka.forms import AuthorForm, PublisherAddForm, GenreAddForm, AddBookForm, GenreSearchForm, BookSearchForm, \
     AddCommentForm
-from polka.models import Author, Book, Genre, Comment
+from polka.models import Author, Book, Genre, Comment, BorrowedBook
 
 
 # Create your views here.
@@ -93,6 +93,13 @@ class ListBookView(ListView):
                 queryset = queryset.filter(authors=author)
         return queryset
 
+class BorrowedBookListView(View):
+
+    def get_queryset(self):
+        return [borrowed.book for borrowed in
+                 BorrowedBook.objects.filter(user=self.request.user, returned_date__isnull=True)]
+    def get(self, request):
+        books = self.get_queryset()
 
 class DetailGenreView(View):
     def get(self, request, pk):

@@ -14,6 +14,7 @@ class Author(models.Model):
         return f'{self.first_name} {self.last_name}'
 
 
+
 class Publisher(models.Model):
     name = models.CharField(max_length=50)
     address = models.CharField(max_length=50)
@@ -39,6 +40,14 @@ class Book(models.Model):
 
     def __str__(self):
         return self.title
+
+class BorrowedBook(models.Model):
+    book = models.ForeignKey(Book, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    date = models.DateField(auto_now_add=True)
+    returned_date = models.DateField(blank=True, null=True)
+
+
 
 class Comment(models.Model):
     author = models.ForeignKey(User, on_delete=models.CASCADE)
